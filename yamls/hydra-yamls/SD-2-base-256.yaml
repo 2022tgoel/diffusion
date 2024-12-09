@@ -26,6 +26,7 @@ dataset:
       # Path to object store bucket(s)
     local:
       # Path to corresponding local dataset(s)
+      ~/latents/data
     tokenizer_name_or_path: stabilityai/stable-diffusion-2-base
     caption_drop_prob: 0.1
     resize_size: 256
@@ -37,15 +38,15 @@ dataset:
     pin_memory: true
     download_timeout: 300
     num_canonical_nodes: 64
-  eval_dataset:
-    _target_: diffusion.datasets.coco.coco_captions.build_streaming_cocoval_dataloader
-    remote:  # Path to object store bucket
-    local: # Path to local dataset cache
-    resize_size: 256
-    prefetch_factor: 2
-    num_workers: 8
-    persistent_workers: True
-    pin_memory: True
+  # eval_dataset:
+  #   _target_: diffusion.datasets.coco.coco_captions.build_streaming_cocoval_dataloader
+  #   remote:  # Path to object store bucket
+  #   local: # Path to local dataset cache
+  #   resize_size: 256
+  #   prefetch_factor: 2
+  #   num_workers: 8
+  #   persistent_workers: True
+  #   pin_memory: True
 optimizer:
   _target_: torch.optim.AdamW
   lr: 1.0e-4
