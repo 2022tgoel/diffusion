@@ -79,7 +79,7 @@ trainer:
   device: gpu
   max_duration: 550000ba
   eval_interval: 10000ba
-  device_train_microbatch_size: 16
+  device_train_microbatch_size: 64
   run_name: ${name}
   seed: ${seed}
   save_folder:  # Insert path to save folder or bucket
