@@ -124,40 +124,40 @@ def train(config: DictConfig) -> None:
     eval_set: Optional[Union[DataSpec, List[Evaluator]]] = None
 
     # Assumes that evaluators is a nested dictionary with evalutor / dataloader pairs
-    if 'evaluators' in config.dataset:
-        evaluators = []
-        for eval_conf in config.dataset.evaluators.values():
-            print(OmegaConf.to_yaml(eval_conf))
-            if tokenizer:
-                eval_dataloader = hydra.utils.instantiate(
-                    eval_conf.eval_dataset,
-                    tokenizer=tokenizer,
-                    batch_size=config.dataset.eval_batch_size // dist.get_world_size(),
-                )
-            else:
-                eval_dataloader = hydra.utils.instantiate(
-                    eval_conf.eval_dataset,
-                    batch_size=config.dataset.eval_batch_size // dist.get_world_size(),
-                )
+    # if 'evaluators' in config.dataset:
+    #     evaluators = []
+    #     for eval_conf in config.dataset.evaluators.values():
+    #         print(OmegaConf.to_yaml(eval_conf))
+    #         if tokenizer:
+    #             eval_dataloader = hydra.utils.instantiate(
+    #                 eval_conf.eval_dataset,
+    #                 tokenizer=tokenizer,
+    #                 batch_size=config.dataset.eval_batch_size // dist.get_world_size(),
+    #             )
+    #         else:
+    #             eval_dataloader = hydra.utils.instantiate(
+    #                 eval_conf.eval_dataset,
+    #                 batch_size=config.dataset.eval_batch_size // dist.get_world_size(),
+    #             )
 
-            evaluator = hydra.utils.instantiate(eval_conf.evaluator, dataloader=eval_dataloader)
-            # Need to sleep for a bit to avoid dataloader crash
-            time.sleep(10)
-            evaluators.append(evaluator)
+    #         evaluator = hydra.utils.instantiate(eval_conf.evaluator, dataloader=eval_dataloader)
+    #         # Need to sleep for a bit to avoid dataloader crash
+    #         time.sleep(10)
+    #         evaluators.append(evaluator)
 
-        eval_set = evaluators
+    #     eval_set = evaluators
 
-    else:
-        if tokenizer:
-            eval_set = hydra.utils.instantiate(config.dataset.eval_dataset,
-                                               tokenizer=model.tokenizer,
-                                               batch_size=config.dataset.eval_batch_size // dist.get_world_size())
-        else:
-            eval_set = hydra.utils.instantiate(config.dataset.eval_dataset,
-                                               batch_size=config.dataset.eval_batch_size // dist.get_world_size())
+    # else:
+    #     if tokenizer:
+    #         eval_set = hydra.utils.instantiate(config.dataset.eval_dataset,
+    #                                            tokenizer=model.tokenizer,
+    #                                            batch_size=config.dataset.eval_batch_size // dist.get_world_size())
+    #     else:
+    #         eval_set = hydra.utils.instantiate(config.dataset.eval_dataset,
+    #                                            batch_size=config.dataset.eval_batch_size // dist.get_world_size())
 
-        # Need to sleep for a bit to avoid dataloader crash
-        time.sleep(10)
+    #     # Need to sleep for a bit to avoid dataloader crash
+    #     time.sleep(10)
 
     # Build list of loggers, callbacks, and algorithms to pass to trainer
     logger: List[LoggerDestination] = []

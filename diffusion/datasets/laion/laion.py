@@ -132,6 +132,7 @@ def build_streaming_laion_dataloader(
     drop_last: bool = True,
     shuffle: bool = True,
     num_canonical_nodes: Optional[int] = None,
+    tokenizer = None,
     **dataloader_kwargs,
 ):
     """Builds a streaming LAION dataloader.
@@ -170,7 +171,7 @@ def build_streaming_laion_dataloader(
     center_square_crop = LargestCenterSquare(resize_size)
     # Normalize from 0 to 1 to -1 to 1
     normalize = transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    transform = transforms.Compose([center_square_crop, transforms.ToTensor(), normalize])
+    transform = transforms.Compose([center_square_crop, lambda x: x[0], transforms.ToTensor(), normalize])
     dataset = StreamingLAIONDataset(
         streams=streams,
         split=None,

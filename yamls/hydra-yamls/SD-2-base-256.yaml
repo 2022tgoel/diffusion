@@ -1,5 +1,5 @@
-project: # Insert wandb project name
-name: # Insert wandb run name
+project: Stable-Diffusion # Insert wandb project name
+name: initial-test # Insert wandb run name
 seed: 17
 eval_first: false
 algorithms:
@@ -14,7 +14,7 @@ model:
   pretrained: false
   precomputed_latents: true
   encode_latents_in_fp16: true
-  fsdp: true
+  fsdp: false
   val_metrics:
     - _target_: torchmetrics.MeanSquaredError
 dataset:
@@ -24,9 +24,10 @@ dataset:
     _target_: diffusion.datasets.laion.laion.build_streaming_laion_dataloader
     remote:
       # Path to object store bucket(s)
+      /home/ec2-user/latents/small-256-512
     local:
       # Path to corresponding local dataset(s)
-      ~/latents/data
+      /tmp/mds-cache
     tokenizer_name_or_path: stabilityai/stable-diffusion-2-base
     caption_drop_prob: 0.1
     resize_size: 256
@@ -85,5 +86,5 @@ trainer:
   save_interval: 10000ba
   save_overwrite: true
   autoresume: false
-  fsdp_config:
-    sharding_strategy: "SHARD_GRAD_OP"
+  # fsdp_config:
+  #   sharding_strategy: "SHARD_GRAD_OP"
