@@ -24,7 +24,7 @@ dataset:
     _target_: diffusion.datasets.laion.laion.build_streaming_laion_dataloader
     remote:
       # Path to object store bucket(s)
-      /home/ec2-user/latents/small-256-512
+      /home/ec2-user/latents/data
     local:
       # Path to corresponding local dataset(s)
       /tmp/mds-cache
