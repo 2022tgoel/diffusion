@@ -86,5 +86,7 @@ trainer:
   save_interval: 10000ba
   save_overwrite: true
   autoresume: false
+  profiler:  # Uncomment if you want to use the profiler, defined in diffusion/diffusion/profiler.py
+    _target_: diffusion.profiler.profiler  
   # fsdp_config:
   #   sharding_strategy: "SHARD_GRAD_OP"
